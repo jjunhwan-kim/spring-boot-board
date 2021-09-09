@@ -27,11 +27,12 @@ class PostsRepositoryTest {
         // given
         String title = "title";
         String content = "content";
+        String author = "author";
 
         postsRepository.save(Posts.builder()
                 .title(title)
                 .content(content)
-                .author("test")
+                .author(author)
                 .build());
 
         // when
@@ -41,5 +42,6 @@ class PostsRepositoryTest {
         Posts posts = postsList.get(0);
         assertThat(posts.getTitle()).isEqualTo(title);
         assertThat(posts.getContent()).isEqualTo(content);
+        assertThat(posts.getAuthor()).isEqualTo(author);
     }
 }
