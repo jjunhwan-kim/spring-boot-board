@@ -85,8 +85,8 @@ class PostsApiControllerTest {
         String expectedContent = "content";
 
         PostsUpdateRequestDto requestDto = PostsUpdateRequestDto.builder()
-                .title(title)
-                .content(content)
+                .title(expectedTitle)
+                .content(expectedContent)
                 .build();
 
         String url = "http://localhost:" + port + "/api/v1/posts/" + updateId;
@@ -102,8 +102,8 @@ class PostsApiControllerTest {
 
         List<Posts> postsList = postsRepository.findAll();
         Posts posts = postsList.get(0);
-        assertThat(posts.getTitle()).isEqualTo(title);
-        assertThat(posts.getContent()).isEqualTo(content);
+        assertThat(posts.getTitle()).isEqualTo(expectedTitle);
+        assertThat(posts.getContent()).isEqualTo(expectedContent);
         assertThat(posts.getAuthor()).isEqualTo(author);
     }
 }
