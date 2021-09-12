@@ -1,5 +1,6 @@
 package com.spring.board.web;
 
+import com.spring.board.config.auth.LoginUser;
 import com.spring.board.config.auth.dto.SessionUser;
 import com.spring.board.service.posts.PostsService;
 import com.spring.board.web.dto.PageListDto;
@@ -30,7 +31,7 @@ public class IndexController {
 
     @GetMapping("/")
     public String index(@PageableDefault(size = DEFAULT_POSTS_COUNT_PER_PAGE, sort = "id",
-            direction = Sort.Direction.DESC) Pageable pageable, Model model) {
+            direction = Sort.Direction.DESC) Pageable pageable, Model model, @LoginUser SessionUser user) {
 
         Page<PostsListResponseDto> page = postsService.findAll(pageable);
         List<PostsListResponseDto> posts = page.getContent();
@@ -49,8 +50,6 @@ public class IndexController {
         model.addAttribute("nextPage", nextPage);
         model.addAttribute("pageList", pageList);
         model.addAttribute("posts", posts);
-
-        SessionUser user = (SessionUser) httpSession.getAttribute("user");
 
         if (user != null) {
             model.addAttribute("userName", user.getName());
