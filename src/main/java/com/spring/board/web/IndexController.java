@@ -1,5 +1,6 @@
 package com.spring.board.web;
 
+import com.spring.board.config.auth.dto.SessionUser;
 import com.spring.board.service.posts.PostsService;
 import com.spring.board.web.dto.PageListDto;
 import com.spring.board.web.dto.PostsListResponseDto;
@@ -14,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +26,7 @@ public class IndexController {
     private final int DEFAULT_POSTS_COUNT_PER_PAGE = 10;
     private final int DISPLAY_PAGE_COUNT = 5;
     private final PostsService postsService;
+    private final HttpSession httpSession;
 
     @GetMapping("/")
     public String index(@PageableDefault(size = DEFAULT_POSTS_COUNT_PER_PAGE, sort = "id",
@@ -46,6 +49,12 @@ public class IndexController {
         model.addAttribute("nextPage", nextPage);
         model.addAttribute("pageList", pageList);
         model.addAttribute("posts", posts);
+
+        SessionUser user = (SessionUser) httpSession.getAttribute("user");
+
+        if (user != null) {
+            model.addAttribute("userName", user.getName());
+        }
 
         return "index";
     }
